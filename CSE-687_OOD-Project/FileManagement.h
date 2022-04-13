@@ -11,7 +11,7 @@ class FileManagement
 public:
 	FileManagement();
 	std::list<std::filesystem::path> GetFilesInDirectory(const std::string& directory) const;
-	void ReadFileByLine(const std::filesystem::path& path) const;
+	std::list<std::string> GetFileLines(const std::filesystem::path& path) const;
 	void WriteFileByLine();
 };
 

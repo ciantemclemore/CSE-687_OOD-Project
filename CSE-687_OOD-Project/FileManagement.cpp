@@ -18,16 +18,19 @@ std::list<std::filesystem::path> FileManagement::GetFilesInDirectory(const std::
 	return files;
 }
 
-void FileManagement::ReadFileByLine(const std::filesystem::path& path) const {
+std::list<std::string> FileManagement::GetFileLines(const std::filesystem::path& path) const {
 	
+	std::list<std::string> fileLines;
 	std::fstream file;
 	file.open(path, std::ios::in);
 	
 	if (file.is_open()) {
 		std::string line;
 		while (std::getline(file, line)) {
-			std::cout << line << std::endl;
+			fileLines.push_back(line);
 		}
 		file.close();
 	}
+
+	return fileLines;
 }
