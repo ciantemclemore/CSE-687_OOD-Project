@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include "FileManagement.h"
 
 /// <summary>
 /// The workflow class will tie together the use of the mapper and reducer classes.
@@ -8,6 +10,13 @@
 /// </summary>
 class Workflow
 {
-	Workflow();
+private:
+	std::string inputDirectory;
+	std::string outputDirectory;
+	std::string tempDirectory;
+	FileManagement fileManager;
+public:
+	Workflow(const std::string& inputDir, const std::string& outputDir, const std::string& tempDir);
+	void Init() const;
 };
 

@@ -1,7 +1,10 @@
 // Executive.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
 
 #include <iostream>
+#include "Workflow.h"
+#include "filesystem"
+#include "fstream"
+#include "string"
 
 /// <summary>
 /// The main function will accept 3 command line arguments.
@@ -14,5 +17,17 @@
 /// <returns></returns>
 int main(int argc, char* argv[])
 {
-    std::cout << "Hello World!\n";
+    // The program should accept 3 inputs (plus the included default argument, i.e Name of the program)
+    if (argc < 4) {
+        std::cout << "Missing input arguments, try again!" << std::endl;
+        exit(0);
+    }
+    
+    const char* directory = "../../CSE-687_OOD-Project/CSE-687_OOD-Project/testfiles";
+
+    // Give the input, output, and temp directories to the workflow component.
+    Workflow workflow(directory, argv[2], argv[3]);
+    workflow.Init();
+    
+    std::cin.get();
 }
