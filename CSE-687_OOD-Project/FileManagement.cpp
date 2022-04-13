@@ -5,7 +5,7 @@
 /// </summary>
 FileManagement::FileManagement() = default;
 
-std::list<std::filesystem::path> FileManagement::GetFilesInDirectory(const std::string & directory) const {
+std::list<std::filesystem::path> FileManagement::GetFilesInDirectory(const std::string& directory) const {
 
 	std::list<std::filesystem::path> files;
 

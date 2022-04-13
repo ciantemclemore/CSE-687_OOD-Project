@@ -8,7 +8,7 @@ Workflow::Workflow(const std::string& inputDir, const std::string& outputDir, co
 }
 
 void Workflow::Init() const {
-	
+
 	std::list<std::filesystem::path> paths = fileManager.GetFilesInDirectory(inputDirectory);
 
 	for (const std::filesystem::path& path : paths) {
