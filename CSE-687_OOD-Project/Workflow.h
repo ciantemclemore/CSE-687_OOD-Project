@@ -14,13 +14,11 @@ class Workflow
 {
 private:
 	const std::string inputDirectory;
-	const std::string outputDirectory;
 	const std::string tempDirectory;
+	const std::string outputDirectory;
 	FileManagement fileManager;
-	Mapper mapper;
-	Reducer reducer;
 public:
-	Workflow(const std::string& inputDir, const std::string& outputDir, const std::string& tempDir);
+	Workflow(const std::string& inputDir, const std::string& tempDir, const std::string& outputDir);
 	void Init() const;
 };
 

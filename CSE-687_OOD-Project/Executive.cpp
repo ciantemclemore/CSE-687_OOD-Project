@@ -5,7 +5,6 @@
 #include "filesystem"
 #include "fstream"
 #include "string"
-
 /// <summary>
 /// The main function will accept 3 command line arguments.
 /// 1. Directory that holds the input files to MapReduce
@@ -27,5 +26,6 @@ int main(int argc, char* argv[])
     Workflow workflow(argv[1], argv[2], argv[3]);
     workflow.Init();
     
+    std::cout << "Operation Complete, press <Enter>" << std::endl;
     std::cin.get();
 }

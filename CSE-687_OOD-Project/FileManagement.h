@@ -12,6 +12,6 @@ public:
 	FileManagement();
 	std::list<std::filesystem::path> GetFilesInDirectory(const std::string& directory) const;
 	std::list<std::string> GetFileLines(const std::filesystem::path& path) const;
-	void WriteFileByLine();
+	void WriteBufferToFile(const std::list<std::string>& buffer, const std::string& path) const;
 };
 

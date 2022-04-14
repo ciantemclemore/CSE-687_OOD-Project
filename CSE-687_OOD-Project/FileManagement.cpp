@@ -34,3 +34,17 @@ std::list<std::string> FileManagement::GetFileLines(const std::filesystem::path&
 
 	return fileLines;
 }
+
+void FileManagement::WriteBufferToFile(const std::list<std::string>& buffer, const std::string& path) const {
+	
+	std::fstream file;
+	file.open(path, std::ios::out);
+
+	if (file.is_open()) {
+		
+		for (const std::string& data : buffer) {
+			file << data << std::endl;
+		}
+		file.close();
+	}
+}
