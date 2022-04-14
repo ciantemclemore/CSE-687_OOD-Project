@@ -13,7 +13,7 @@ private:
 	FileManagement fileManager;
 public:
 	Mapper(const std::string& outputFilePath);
-	void map(const std::filesystem::path& filePath, const std::string& line);
-	void exportData(const std::filesystem::path& filePath, const std::string& token = "");
+	void Map(const std::filesystem::path& filePath, const std::string& line);
+	void ExportData(const std::filesystem::path& filePath, const std::string& token = "");
 };
 

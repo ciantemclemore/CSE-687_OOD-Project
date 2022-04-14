@@ -15,7 +15,7 @@ void Workflow::Init() const {
 		std::list<std::string> fileLines = fileManager.GetFileLines(path);
 
 		for (const std::string& line : fileLines) {
-			mapper.map(path, line);
+			mapper.Map(path, line);
 		}
 	}
 }

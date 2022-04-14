@@ -21,7 +21,7 @@ public:
 			std::string newWord = RemoveSpecialCharacters(word);
 			
 			if (!newWord.empty()) {
-				toLower(newWord);
+				ToLower(newWord);
 				tokens.push_back(newWord);
 			}
 		}
@@ -45,7 +45,7 @@ public:
 		return temp;
 	}
 private:
-	void static toLower(std::string& entry) {
+	void static ToLower(std::string& entry) {
 		for (char& c : entry) {
 			// only want to do characters that are in range of 65-90 (A-Z)
 			if(c < 97)
