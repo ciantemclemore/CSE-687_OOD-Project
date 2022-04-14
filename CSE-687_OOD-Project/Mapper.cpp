@@ -11,8 +11,8 @@ Mapper::Mapper() {
 /// The map function will accept two parameters. A key (filename) and a value (single line of raw data).
 /// The function will tokenize the value into distinct words and then call export.
 /// </summary>
-void Mapper::map() {
-
+void Mapper::map(const std::filesystem::path&, const std::string& line) const {
+	auto tokens = Utility::SplitAndClean(line);
 }
 
 /// <summary>

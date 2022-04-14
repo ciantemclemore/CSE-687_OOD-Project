@@ -22,11 +22,9 @@ int main(int argc, char* argv[])
         std::cout << "Missing input arguments, try again!" << std::endl;
         exit(0);
     }
-    
-    const char* directory = "../../CSE-687_OOD-Project/CSE-687_OOD-Project/testfiles";
 
     // Give the input, output, and temp directories to the workflow component.
-    Workflow workflow(directory, argv[2], argv[3]);
+    Workflow workflow(argv[1], argv[2], argv[3]);
     workflow.Init();
     
     std::cin.get();

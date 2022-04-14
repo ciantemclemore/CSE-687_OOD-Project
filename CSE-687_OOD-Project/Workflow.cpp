@@ -8,16 +8,13 @@ Workflow::Workflow(const std::string& inputDir, const std::string& outputDir, co
 }
 
 void Workflow::Init() const {
-
 	std::list<std::filesystem::path> paths = fileManager.GetFilesInDirectory(inputDirectory);
-
 
 	for (const std::filesystem::path& path : paths) {
 		std::list<std::string> fileLines = fileManager.GetFileLines(path);
 
-		// for each line in the file, send it to the map function of the mapper
 		for (const std::string& line : fileLines) {
-
+			mapper.map(path, line);
 		}
 	}
 }

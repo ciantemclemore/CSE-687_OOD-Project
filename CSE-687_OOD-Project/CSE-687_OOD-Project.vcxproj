@@ -150,6 +150,7 @@
     <ClInclude Include="FileManagement.h" />
     <ClInclude Include="Mapper.h" />
     <ClInclude Include="Reducer.h" />
+    <ClInclude Include="Utility.h" />
     <ClInclude Include="Workflow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
