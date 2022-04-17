@@ -11,7 +11,7 @@ Reducer::Reducer() {
 /// The reduce function will take two parameters. A string key and an iterator of integers.
 /// The function will sum all the values in the iterator and then call export.
 /// </summary>
-void Reducer::reduce() {
+void Reducer::Reduce() {
 }
 
 /// <summary>
@@ -19,5 +19,5 @@ void Reducer::reduce() {
 /// the reduce function. The function will write the result to the output directory. This function should
 /// not directly deal with an File IO.
 /// </summary>
-void Reducer::exportData() {
+void Reducer::ExportData() {
 }
