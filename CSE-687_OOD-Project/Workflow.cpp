@@ -18,4 +18,26 @@ void Workflow::Init() const {
 			mapper.Map(path, line);
 		}
 	}
+
+	std::list<std::filesystem::path> temps = fileManager.GetFilesInDirectory(tempDirectory);
+	Reducer reducer(outputDirectory);
+	std::map<std::string, std::list<int>> sortedContainer;
+
+	for (const std::filesystem::path& temp : temps) {
+		std::list<std::string> keys = fileManager.GetFileLines(temp);
+		//how to fit this inside utility header
+		for (const std::string& key : keys) {
+			if (sortedContainer.find(key) != sortedContainer.end()) { // there is such an element
+				sortedContainer.insert(std::pair<std::string, int>(key, 1));
+			}
+			else { //such an element does not exist, create new instance
+				sortedContainer[key].push_back(1);
+			}
+			//std::list<int> iterations = Utility::Sort(key);
+
+		}
+	}
+	for (const auto& sortedPair : sortedContainer) {
+		reducer.Reduce(sortedPair.first, sortedPair.second);
+	}
 }

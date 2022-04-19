@@ -3,15 +3,14 @@
 /// <summary>
 /// Constructor
 /// </summary>
-Reducer::Reducer() {
-
+Reducer::Reducer(const std::string& outputFilePath) : outputFilePath(outputFilePath) {
 }
 
 /// <summary>
 /// The reduce function will take two parameters. A string key and an iterator of integers.
 /// The function will sum all the values in the iterator and then call export.
 /// </summary>
-void Reducer::Reduce() {
+void Reducer::Reduce(const std::string& key, const std::list<int>& iterations) {
 }
 
 /// <summary>
@@ -19,5 +18,5 @@ void Reducer::Reduce() {
 /// the reduce function. The function will write the result to the output directory. This function should
 /// not directly deal with an File IO.
 /// </summary>
-void Reducer::ExportData() {
+void Reducer::ExportData(const std::string& key, const std::string& reducedData) { //reduced data
 }
