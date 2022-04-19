@@ -23,7 +23,7 @@ TEST_F(FileUtility, FileUtilityTestSplitAndClean) {
 	auto x = Utility::SplitAndClean(input1);
 	EXPECT_EQ(x, std::list<std::string>());
 	auto y = Utility::SplitAndClean(input2);
-	EXPECT_EQ(y.size(), Utility::SplitAndClean(input2).size());
+	EXPECT_EQ(y.size(), 6);
 }
 
 TEST_F(FileUtility, FileUtilityTestRemoveSpecialCharacters) {
