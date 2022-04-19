@@ -2,7 +2,7 @@
 #include "regex"
 #include "../CSE-687_OOD-Project/Utility.h"
 
-class FileUtility : public ::testing::Test {
+class Utilities : public ::testing::Test {
 protected:
 	void SetUp() override {
 		input1 = "";
@@ -19,14 +19,14 @@ public:
 	std::string input5;
 };
 
-TEST_F(FileUtility, FileUtilityTestSplitAndClean) {
+TEST_F(Utilities, UtilityTestSplitAndClean) {
 	auto x = Utility::SplitAndClean(input1);
 	EXPECT_EQ(x, std::list<std::string>());
 	auto y = Utility::SplitAndClean(input2);
 	EXPECT_EQ(y.size(), 6);
 }
 
-TEST_F(FileUtility, FileUtilityTestRemoveSpecialCharacters) {
+TEST_F(Utilities, UtilityTestRemoveSpecialCharacters) {
 	auto x = Utility::RemoveSpecialCharacters(input3);
 	auto y = Utility::RemoveSpecialCharacters(input4);
 	auto z = Utility::RemoveSpecialCharacters(input5);
