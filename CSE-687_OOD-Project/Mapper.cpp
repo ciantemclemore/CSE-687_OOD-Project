@@ -32,7 +32,7 @@ void Mapper::ExportData(const std::filesystem::path& filePath, const std::string
 
 		if (!currentFileName.empty()) {
 			// write to the currentFileName path
-			fileManager.WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName);
+			fileManager.WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::out);
 			
 			// clear the buffer after writing
 			writeBuffer.clear();
@@ -47,7 +47,7 @@ void Mapper::ExportData(const std::filesystem::path& filePath, const std::string
 	// this ensures that we always write to the last file, the current logic will always write every file except the last.
 	// On the last file, the currentFileName and filePath that is give will match, so you have to ensure to write the last file
 	if (!writeBuffer.empty() && token.empty()) {
-		fileManager.WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName);
+		fileManager.WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::out);
 	}
 }
 

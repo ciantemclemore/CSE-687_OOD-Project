@@ -2,24 +2,25 @@
 #include <string>
 #include <sstream>
 #include <list>
+#include <map>
 
 class Utility {
 public:
 	std::list<std::string> static SplitAndClean(const std::string& entry) {
-	
+
 		// push the string to the stream
 		std::stringstream stream(entry);
-	
+
 		// create a list that will store the split tokens
 		std::list<std::string> tokens;
-	
+
 		// this string will hold the current token
 		std::string word;
-	
+
 		// save all of our tokens
 		while (stream >> word) {
 			std::string newWord = RemoveSpecialCharacters(word);
-			
+
 			if (!newWord.empty()) {
 				ToLower(newWord);
 				tokens.push_back(newWord);
@@ -48,7 +49,7 @@ private:
 	void static ToLower(std::string& entry) {
 		for (char& c : entry) {
 			// only want to do characters that are in range of 65-90 (A-Z)
-			if(c < 97)
+			if (c < 97)
 				c = (char)std::tolower(c);
 		}
 	}
