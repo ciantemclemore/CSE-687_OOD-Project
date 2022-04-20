@@ -37,6 +37,10 @@ std::list<std::string> FileManagement::GetFileLines(const std::filesystem::path&
 		}
 		file.close();
 	}
+	else {
+		std::cout << "Path to file does not exist, please create a file at path " << path << std::endl;
+		exit(0);
+	}
 
 	return fileLines;
 }
