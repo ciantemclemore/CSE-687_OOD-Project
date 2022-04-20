@@ -9,6 +9,12 @@ std::list<std::filesystem::path> FileManagement::GetFilesInDirectory(const std::
 
 	std::list<std::filesystem::path> files;
 
+	// Determine if the directory exists or not
+	if (!std::filesystem::is_directory(directory)) {
+		std::cout << "Directory does not exist, please create directory " << "\"" << directory << "\"" << std::endl;
+		exit(0);
+	}
+
 	if (!directory.empty()) {
 		for (const auto& entry : std::filesystem::directory_iterator(directory)) {
 			files.push_back(entry.path());
