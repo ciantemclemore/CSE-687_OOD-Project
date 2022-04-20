@@ -14,6 +14,6 @@ private:
 	FileManagement fileManager;
 public:
 	Reducer(const std::string& outputFilePath);
-	void Reduce(const std::string& key, const std::list<int>& iterator);
-	void ExportData(const std::string& key, const std::string& reducedData);
+	void Reduce(const std::string& key, const std::vector<int>& iterations);
+	void ExportData(const std::string& key, const int reducedData);
 };

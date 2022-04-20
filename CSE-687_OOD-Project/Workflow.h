@@ -3,6 +3,7 @@
 #include "FileManagement.h"
 #include "Mapper.h"
 #include "Reducer.h"
+#include "map"
 
 /// <summary>
 /// The workflow class will tie together the use of the mapper and reducer classes.

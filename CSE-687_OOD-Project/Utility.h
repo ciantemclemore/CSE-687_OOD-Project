@@ -45,16 +45,6 @@ public:
 
 		return temp;
 	}
-	std::list<int> Sort(const std::string& entry) {
-
-		std::string key = entry;
-
-		// create a list that will store the the total iterations
-		std::list<int> iterations;
-
-		return iterations;
-
-	}
 private:
 	void static ToLower(std::string& entry) {
 		for (char& c : entry) {
