@@ -23,7 +23,7 @@ void Workflow::Init() const {
 
 	// Get the temporary files after mapping for sorting and aggregation
 	std::list<std::filesystem::path> temps = fileManager.GetFilesInDirectory(tempDirectory);
-	std::map<std::string, std::vector<int>> sortedContainer = std::map<std::string, std::vector<int>>();
+	auto sortedContainer = std::map<std::string, std::vector<int>>();
 	Reducer reducer(outputDirectory);
 
 	// Aggregating and sorting the keys
@@ -39,10 +39,8 @@ void Workflow::Init() const {
 			// get the first token, which will be the key
 			std::string sortKey = tokens.front();
 
-			if (sortedContainer.find(sortKey) == sortedContainer.end()) { // there is such an element
-				sortedContainer.insert(std::pair<std::string, std::vector<int>>(sortKey, std::vector<int>(1, 1)));
-			}
-			else { //such an element does not exist, create new instance
+			// place the token in the map if it doesn't exist.. else - push to the tokens current vector
+			if (!sortedContainer.emplace(sortKey, std::vector<int>(1, 1)).second) {
 				sortedContainer[sortKey].push_back(1);
 			}
 		}
