@@ -13,13 +13,11 @@ Mapper::Mapper(const std::string& outputFilePath) : outputFilePath(outputFilePat
 void Mapper::Map(const std::filesystem::path& filePath, const std::string& line) {
 	
 	auto tokens = Utility::SplitAndClean(line);
+	totalBufferCount = tokens.size();
 
 	for (const std::string& token : tokens) {
 		ExportData(filePath, token);
 	}
-	
-	// call export data one last time to ensure you write the final file
-	ExportData(filePath);
 }
 
 /// <summary>
@@ -28,26 +26,27 @@ void Mapper::Map(const std::filesystem::path& filePath, const std::string& line)
 /// </summary>
 void Mapper::ExportData(const std::filesystem::path& filePath, const std::string& token) {
 	
-	if (currentFileName != filePath.filename().string()) {
+	if (!token.empty()) {
+		writeBuffer.push_back(token + " 1");
+		totalBufferCount--;
+	}
 
-		if (!currentFileName.empty()) {
-			// write to the currentFileName path
-			fileManager.WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::out);
+	if (currentFileName != filePath.filename().string() || totalBufferCount == 0) {
+
+		if (!currentFileName.empty() && totalBufferCount == 0) {
+			
+			// write the buffer to the file
+			if (std::filesystem::exists(outputFilePath + "\\" + currentFileName)) {
+				fileManager.WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::app);
+			}
+			else {
+				fileManager.WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::out);
+			}
 			
 			// clear the buffer after writing
 			writeBuffer.clear();
 		}
 		currentFileName.assign(filePath.filename().string());
-	}
-
-	if (!token.empty()) {
-		writeBuffer.push_back(token + " 1");
-	}
-
-	// this ensures that we always write to the last file, the current logic will always write every file except the last.
-	// On the last file, the currentFileName and filePath that is give will match, so you have to ensure to write the last file
-	if (!writeBuffer.empty() && token.empty()) {
-		fileManager.WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::out);
 	}
 }
 
