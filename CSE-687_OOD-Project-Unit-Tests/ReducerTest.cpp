@@ -25,9 +25,10 @@ TEST_F(ReduceAndOutputTest, ReduceTempAndOutputFinal) {
 
 	for (const auto& sortedPair : testContainer) { //call premade map of words and instances
 		reducer1.Reduce(sortedPair.first, sortedPair.second); //takes string of key, and vector of integers of iterations
-
-		// test if the final output file was created with correct format
-		std::filesystem::path outputPath = "../CSE-687_OOD-Project/outputfiles/finalOutput.txt";
-		EXPECT_EQ(std::filesystem::exists(outputPath), true) << "Final Output Failed";
 	}
+
+	// test if the final output file was created with correct format
+	std::filesystem::path outputPath = "../CSE-687_OOD-Project/outputfiles/finalOutput.txt";
+	EXPECT_EQ(std::filesystem::exists(outputPath), true) << "Final Output Failed";
+	remove(outputPath);
 }

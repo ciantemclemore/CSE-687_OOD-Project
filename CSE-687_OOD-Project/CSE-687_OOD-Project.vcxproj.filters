@@ -24,9 +24,6 @@
     <ClCompile Include="Reducer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FileManagement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Workflow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -44,7 +41,10 @@
     <ClInclude Include="Workflow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utility.h">
+    <ClInclude Include="Utilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sorter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

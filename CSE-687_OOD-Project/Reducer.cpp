@@ -29,5 +29,5 @@ void Reducer::ExportData(const std::string& key, int reducedData) { //reduced da
 	std::list<std::string> buffer = std::list <std::string> ();
 	std::string content = key + " " + std::to_string(reducedData);
 	buffer.push_back(content);
-	fileManager.WriteBufferToFile(buffer, outputFilePath + "\\" + "finalOutput.txt", std::ios::app);
+	FileManagement::WriteBufferToFile(buffer, outputFilePath + "\\" + "finalOutput.txt", std::ios::app);
 }

@@ -12,7 +12,7 @@ Mapper::Mapper(const std::string& outputFilePath) : outputFilePath(outputFilePat
 /// </summary>
 void Mapper::Map(const std::filesystem::path& filePath, const std::string& line) {
 	
-	auto tokens = Utility::SplitAndClean(line);
+	auto tokens = Utilities::SplitAndClean(line);
 	totalBufferCount = tokens.size();
 
 	for (const std::string& token : tokens) {
@@ -37,10 +37,10 @@ void Mapper::ExportData(const std::filesystem::path& filePath, const std::string
 			
 			// write the buffer to the file
 			if (std::filesystem::exists(outputFilePath + "\\" + currentFileName)) {
-				fileManager.WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::app);
+				FileManagement::WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::app);
 			}
 			else {
-				fileManager.WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::out);
+				FileManagement::WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::out);
 			}
 			
 			// clear the buffer after writing

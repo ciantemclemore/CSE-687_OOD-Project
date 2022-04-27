@@ -22,10 +22,26 @@ int main(int argc, char* argv[])
         exit(0);
     }
 
-    // Give the input, output, and temp directories to the workflow component.
-    Workflow workflow(argv[1], argv[2], argv[3]);
-    workflow.Init();
+    if (std::filesystem::is_directory(argv[1]) && std::filesystem::is_directory(argv[2]) && std::filesystem::is_directory(argv[3])) {
+        // Give the input, output, and temp directories to the workflow component.
+        Workflow workflow(argv[1], argv[2], argv[3]);
+
+        // Update the user
+        std::cout << "Beginning Processing..." << std::endl;
+        workflow.Init();
+
+        // file cleanup
+        auto files = FileManagement::GetFilesInDirectory(argv[2]);
+        for (const auto& file : files) {
+            remove(file);
+        }
+        std::cout << "All files cleaned up in " << argv[2] << std::endl;
     
-    std::cout << "Operation Complete, press <Enter>" << std::endl;
-    std::cin.get();
+        std::cout << "Operation Complete, press <Enter>" << std::endl;
+        std::cin.get();
+    }
+    else {
+        std::cout << "One or more of the provided file directories don't exist. Retry!";
+        exit(0);
+    }
 }
