@@ -29,6 +29,13 @@ int main(int argc, char* argv[])
         // Update the user
         std::cout << "Beginning Processing..." << std::endl;
         workflow.Init();
+
+        // file cleanup
+        auto files = FileManagement::GetFilesInDirectory(argv[2]);
+        for (const auto& file : files) {
+            remove(file);
+        }
+        std::cout << "All files cleaned up in " << argv[2] << std::endl;
     
         std::cout << "Operation Complete, press <Enter>" << std::endl;
         std::cin.get();
