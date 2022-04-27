@@ -3,6 +3,7 @@
 #include "FileManagement.h"
 #include "Mapper.h"
 #include "Reducer.h"
+#include "Sorter.h"
 #include "map"
 
 /// <summary>

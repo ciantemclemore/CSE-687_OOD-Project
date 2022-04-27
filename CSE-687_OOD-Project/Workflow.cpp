@@ -10,44 +10,41 @@ Workflow::Workflow(const std::string& inputDir, const std::string& tempDir, cons
 void Workflow::Init() const {
 
 	// Map the files so that they can be sorted and reduced later
-	std::list<std::filesystem::path> paths = fileManager.GetFilesInDirectory(inputDirectory);
+	std::vector<std::filesystem::path> inputFiles = FileManagement::GetFilesInDirectory(inputDirectory);
 	Mapper mapper(tempDirectory);
 
-	for (const std::filesystem::path& path : paths) {
-		std::list<std::string> fileLines = fileManager.GetFileLines(path);
+	// notify the user that mapping is beginning
+	std::cout << "Mapping process is beginning..." << std::endl;
 
+	for (const std::filesystem::path& file : inputFiles) {
+		std::vector<std::string> fileLines = FileManagement::GetFileLines(file);
+		std::cout << "Mapping " << file.filename() << std::endl;
+		
 		for (const std::string& line : fileLines) {
-			mapper.Map(path, line);
-		}
-	}
-
-	// Get the temporary files after mapping for sorting and aggregation
-	std::list<std::filesystem::path> temps = fileManager.GetFilesInDirectory(tempDirectory);
-	auto sortedContainer = std::map<std::string, std::vector<int>>();
-	Reducer reducer(outputDirectory);
-
-	// Aggregating and sorting the keys
-	for (const std::filesystem::path& temp : temps) {
-		std::list<std::string> keys = fileManager.GetFileLines(temp);
-
-		//how to fit this inside utility header
-		for (const std::string& key : keys) {
 			
-			// get all the tokens in the line
-			std::list<std::string> tokens = Utility::SplitAndClean(key);
-
-			// get the first token, which will be the key
-			std::string sortKey = tokens.front();
-
-			// place the token in the map if it doesn't exist.. else - push to the tokens current vector
-			if (!sortedContainer.emplace(sortKey, std::vector<int>(1, 1)).second) {
-				sortedContainer[sortKey].push_back(1);
-			}
+			mapper.Map(file, line);
 		}
 	}
 
+	// Get the intermediate files after mapping and begin sorting/aggregation
+	Sorter sorter;
+	std::vector<std::filesystem::path> tempFiles = FileManagement::GetFilesInDirectory(tempDirectory);
+
+	// Notify the user that sorting and aggregating is taking place
+	std::cout << "Sorting and Aggregating all intermediate files..." << std::endl;
+
+	std::map<std::string, std::vector<int>> sortedContainer = sorter.sortAndAggregate(tempFiles);
+
+
+	// Notify the user that reducing is beginning
+	std::cout << "Reducing process is beginning..." << std::endl;
+
+	// Begin the reducing phase
+	Reducer reducer(outputDirectory);
+	
 	// Call reduce on each key
-	for (const auto& sortedPair: sortedContainer) {
-		reducer.Reduce(sortedPair.first, sortedPair.second);
+	for (const auto& [key, value]: sortedContainer) {
+		std::cout << "Reducing " << "'" << key << "' key" << std::endl;
+		reducer.Reduce(key, value);
 	}
 }

@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "regex"
-#include "../CSE-687_OOD-Project/Utility.h"
+#include "../CSE-687_OOD-Project/Utilities.h"
 
-class Utilities : public ::testing::Test {
+class Utilities_F : public ::testing::Test {
 protected:
 	void SetUp() override {
 		input1 = "";
@@ -19,17 +19,17 @@ public:
 	std::string input5;
 };
 
-TEST_F(Utilities, UtilityTestSplitAndClean) {
-	auto x = Utility::SplitAndClean(input1);
-	EXPECT_EQ(x, std::list<std::string>());
-	auto y = Utility::SplitAndClean(input2);
+TEST_F(Utilities_F, UtilityTestSplitAndClean) {
+	auto x = Utilities::SplitAndClean(input1);
+	EXPECT_EQ(x, std::vector<std::string>());
+	auto y = Utilities::SplitAndClean(input2);
 	EXPECT_EQ(y.size(), 6);
 }
 
-TEST_F(Utilities, UtilityTestRemoveSpecialCharacters) {
-	auto x = Utility::RemoveSpecialCharacters(input3);
-	auto y = Utility::RemoveSpecialCharacters(input4);
-	auto z = Utility::RemoveSpecialCharacters(input5);
+TEST_F(Utilities_F, UtilityTestRemoveSpecialCharacters) {
+	auto x = Utilities::RemoveSpecialCharacters(input3);
+	auto y = Utilities::RemoveSpecialCharacters(input4);
+	auto z = Utilities::RemoveSpecialCharacters(input5);
 	EXPECT_FALSE(std::regex_search(x, std::regex("[^a-zA-Z0-9]+"))) << "The input contains special characters." << std::endl;
 	EXPECT_FALSE(std::regex_search(y, std::regex("[^a-zA-Z0-9]+"))) << "The input contains special characters." << std::endl;
 	EXPECT_FALSE(std::regex_search(z, std::regex("[^a-zA-Z0-9]+"))) << "The input contains special characters." << std::endl;

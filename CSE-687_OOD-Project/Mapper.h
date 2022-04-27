@@ -1,7 +1,7 @@
 #pragma once
-#include <filesystem>
-#include "Utility.h"
-#include <string>
+#include "filesystem"
+#include "Utilities.h"
+#include "string"
 #include "FileManagement.h"
 
 class Mapper
@@ -11,7 +11,6 @@ private:
 	std::string currentFileName;
 	const std::string outputFilePath;
 	size_t totalBufferCount;
-	FileManagement fileManager;
 public:
 	explicit Mapper(const std::string& outputFilePath);
 	void Map(const std::filesystem::path& filePath, const std::string& line);
