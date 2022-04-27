@@ -28,12 +28,14 @@ int main(int argc, char* argv[])
 
         // Update the user
         std::cout << "Beginning Processing..." << std::endl;
-        workflow.Init();
+        //workflow.Init();
 
         // file cleanup
         auto files = FileManagement::GetFilesInDirectory(argv[2]);
         for (const auto& file : files) {
-            remove(file);
+            if (file.filename().string() != "readme.txt") {
+                remove(file);
+            }
         }
         std::cout << "All files cleaned up in " << argv[2] << std::endl;
     
