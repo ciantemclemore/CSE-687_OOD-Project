@@ -37,10 +37,10 @@ void Mapper::ExportData(const std::filesystem::path& filePath, const std::string
 			
 			// write the buffer to the file
 			if (std::filesystem::exists(outputFilePath + "\\" + currentFileName)) {
-				FileManagement::WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::app);
+				Utilities::WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::app);
 			}
 			else {
-				FileManagement::WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::out);
+				Utilities::WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::out);
 			}
 			
 			// clear the buffer after writing

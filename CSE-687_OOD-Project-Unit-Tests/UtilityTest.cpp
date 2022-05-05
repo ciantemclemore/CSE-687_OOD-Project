@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "regex"
-#include "../CSE-687_OOD-Project/Utilities.h"
+#include "Utilities.h"
 
 class Utilities_F : public ::testing::Test {
 protected:

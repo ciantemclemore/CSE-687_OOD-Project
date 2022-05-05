@@ -5,6 +5,7 @@
 #include "filesystem"
 #include "fstream"
 #include "string"
+#include "Utilities.h"
 /// <summary>
 /// The main function will accept 3 command line arguments.
 /// 1. Directory that holds the input files to MapReduce
@@ -31,7 +32,7 @@ int main(int argc, char* argv[])
         workflow.Init();
 
         // file cleanup
-        auto files = FileManagement::GetFilesInDirectory(argv[2]);
+        auto files = Utilities::GetFilesInDirectory(argv[2]);
         for (const auto& file : files) {
             if (file.filename().string() != "readme.txt") {
                 remove(file);

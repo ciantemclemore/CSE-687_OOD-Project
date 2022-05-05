@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "FileManagement.h"
+#include "Utilities.h"
 #include "Mapper.h"
 #include "Reducer.h"
 #include "Sorter.h"
@@ -18,7 +18,6 @@ private:
 	const std::string inputDirectory;
 	const std::string tempDirectory;
 	const std::string outputDirectory;
-	FileManagement fileManager;
 public:
 	Workflow(const std::string& inputDir, const std::string& tempDir, const std::string& outputDir);
 	void Init() const;

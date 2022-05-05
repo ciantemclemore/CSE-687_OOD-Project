@@ -1,12 +1,11 @@
 #include "pch.h"
-#include "../CSE-687_OOD-Project/FileManagement.h"
 #include "../CSE-687_OOD-Project/Mapper.cpp"
 #include "../CSE-687_OOD-Project/Sorter.h"
 
 class MapAndSortTest : public ::testing::Test {
 public:
 	MapAndSortTest() {
-		files = FileManagement::GetFilesInDirectory("../CSE-687_OOD-Project/inputfiles/");
+		files = Utilities::GetFilesInDirectory("../CSE-687_OOD-Project/inputfiles/");
 	}
 	std::vector<std::filesystem::path> files;
 };
@@ -17,7 +16,7 @@ TEST_F(MapAndSortTest, TestMapAndExportData) {
 	Mapper mapper("../CSE-687_OOD-Project/tempfiles/");
 	std::cout << "Mapping Files..." << std::endl;
 	for (const std::filesystem::path& path : files) {
-		std::vector<std::string> fileLines = FileManagement::GetFileLines(path);
+		std::vector<std::string> fileLines = Utilities::GetFileLines(path);
 
 		for (const std::string& line : fileLines) {
 			mapper.Map(path, line);
@@ -38,15 +37,15 @@ TEST_F(MapAndSortTest, TestSort) {
 	Sorter sorter;
 
 	std::filesystem::path testInputFile = files[0];
-	std::vector<std::string> testInputFileLines = FileManagement::GetFileLines(testInputFile);
+	std::vector<std::string> testInputFileLines = Utilities::GetFileLines(testInputFile);
 
 	for (const std::string& line : testInputFileLines) {
 		mapper.Map(testInputFile, line);
 	}
 
 	// now test sorting on the mapper file
-	auto tempFile = FileManagement::GetFilesInDirectory("../CSE-687_OOD-Project/tempfiles/")[0];
-	auto tempFileLInesCount = FileManagement::GetFileLines(tempFile).size();
+	auto tempFile = Utilities::GetFilesInDirectory("../CSE-687_OOD-Project/tempfiles/")[0];
+	auto tempFileLInesCount = Utilities::GetFileLines(tempFile).size();
 	std::vector<std::filesystem::path> files(1, tempFile);
 	auto x = sorter.sortAndAggregate(files);
 	EXPECT_LT(x.size(), tempFileLInesCount);

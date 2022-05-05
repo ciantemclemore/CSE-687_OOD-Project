@@ -15,7 +15,6 @@ public:
 		testContainer.emplace("when", std::vector<int>(6, 1));
 		testContainer.emplace("then", std::vector<int>(4, 1));
 	}
-	FileManagement fileManager;
 	std::list<std::filesystem::path> paths;
 	std::map<std::string, std::vector<int>> testContainer;
 };

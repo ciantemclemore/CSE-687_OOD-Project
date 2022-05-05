@@ -1,6 +1,6 @@
 #pragma once
-#include "FileManagement.h"
 #include "Utilities.h"
+#include "map"
 
 class Sorter {
 public:
@@ -12,7 +12,7 @@ public:
 
 		for (const std::filesystem::path& path : paths) {
 
-			std::vector<std::string> keys = FileManagement::GetFileLines(path);
+			std::vector<std::string> keys = Utilities::GetFileLines(path);
 
 			for (const std::string& key : keys) {
 

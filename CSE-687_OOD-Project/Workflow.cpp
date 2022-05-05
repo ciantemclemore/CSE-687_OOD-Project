@@ -10,14 +10,14 @@ Workflow::Workflow(const std::string& inputDir, const std::string& tempDir, cons
 void Workflow::Init() const {
 
 	// Map the files so that they can be sorted and reduced later
-	std::vector<std::filesystem::path> inputFiles = FileManagement::GetFilesInDirectory(inputDirectory);
+	std::vector<std::filesystem::path> inputFiles = Utilities::GetFilesInDirectory(inputDirectory);
 	Mapper mapper(tempDirectory);
 
 	// notify the user that mapping is beginning
 	std::cout << "Mapping process is beginning..." << std::endl;
 
 	for (const std::filesystem::path& file : inputFiles) {
-		std::vector<std::string> fileLines = FileManagement::GetFileLines(file);
+		std::vector<std::string> fileLines = Utilities::GetFileLines(file);
 		std::cout << "Mapping " << file.filename() << std::endl;
 		
 		for (const std::string& line : fileLines) {
@@ -28,7 +28,7 @@ void Workflow::Init() const {
 
 	// Get the intermediate files after mapping and begin sorting/aggregation
 	Sorter sorter;
-	std::vector<std::filesystem::path> tempFiles = FileManagement::GetFilesInDirectory(tempDirectory);
+	std::vector<std::filesystem::path> tempFiles = Utilities::GetFilesInDirectory(tempDirectory);
 
 	// Notify the user that sorting and aggregating is taking place
 	std::cout << "Sorting and Aggregating all intermediate files..." << std::endl;
