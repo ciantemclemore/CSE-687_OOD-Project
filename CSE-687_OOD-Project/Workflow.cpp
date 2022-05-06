@@ -1,6 +1,5 @@
 #include "Workflow.h"
 
-
 /// <summary>
 /// Constructor to initialize the workflow component
 /// </summary>
@@ -9,20 +8,29 @@ Workflow::Workflow(const std::string& inputDir, const std::string& tempDir, cons
 
 void Workflow::Init() const {
 
-	// Map the files so that they can be sorted and reduced later
-	std::vector<std::filesystem::path> inputFiles = Utilities::GetFilesInDirectory(inputDirectory);
-	Mapper mapper(tempDirectory);
+	HINSTANCE mapLibraryHandle;
+	FuncMap Map;
+	const wchar_t* libraryName = L"MapperLibrary";
 
-	// notify the user that mapping is beginning
-	std::cout << "Mapping process is beginning..." << std::endl;
+	mapLibraryHandle = LoadLibraryEx(libraryName, nullptr, NULL);
 
-	for (const std::filesystem::path& file : inputFiles) {
-		std::vector<std::string> fileLines = Utilities::GetFileLines(file);
-		std::cout << "Mapping " << file.filename() << std::endl;
-		
-		for (const std::string& line : fileLines) {
-			
-			mapper.Map(file, line);
+	if (mapLibraryHandle != nullptr) {
+		Map = (FuncMap)GetProcAddress(mapLibraryHandle, "Map");
+
+		// Map the files so that they can be sorted and reduced later
+		std::vector<std::filesystem::path> inputFiles = Utilities::GetFilesInDirectory(inputDirectory);
+
+		// notify the user that mapping is beginning
+		std::cout << "Mapping process is beginning..." << std::endl;
+
+		for (const std::filesystem::path& file : inputFiles) {
+			std::vector<std::string> fileLines = Utilities::GetFileLines(file);
+			std::cout << "Mapping " << file.filename() << std::endl;
+
+			for (const std::string& line : fileLines) {
+
+				Map(file, line, tempDirectory);
+			}
 		}
 	}
 
@@ -33,7 +41,7 @@ void Workflow::Init() const {
 	// Notify the user that sorting and aggregating is taking place
 	std::cout << "Sorting and Aggregating all intermediate files..." << std::endl;
 
-	std::map<std::string, std::vector<int>> sortedContainer = sorter.sortAndAggregate(tempFiles);
+	std::map<std::string, std::vector<int>, std::less<>> sortedContainer = sorter.sortAndAggregate(tempFiles);
 
 
 	// Notify the user that reducing is beginning
@@ -41,9 +49,9 @@ void Workflow::Init() const {
 
 	// Begin the reducing phase
 	Reducer reducer(outputDirectory);
-	
+
 	// Call reduce on each key
-	for (const auto& [key, value]: sortedContainer) {
+	for (const auto& [key, value] : sortedContainer) {
 		std::cout << "Reducing " << "'" << key << "' key" << std::endl;
 		reducer.Reduce(key, value);
 	}

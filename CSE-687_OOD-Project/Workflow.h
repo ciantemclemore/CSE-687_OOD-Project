@@ -1,10 +1,12 @@
 #pragma once
 #include <iostream>
 #include "Utilities.h"
-#include "Mapper.h"
 #include "Reducer.h"
 #include "Sorter.h"
 #include "map"
+#include <wtypes.h>
+
+using FuncMap = void (*)(const std::filesystem::path& filePath, const std::string& line, const std::filesystem::path& tempOutputPath);
 
 /// <summary>
 /// The workflow class will tie together the use of the mapper and reducer classes.

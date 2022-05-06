@@ -3,42 +3,27 @@
 #include "MapperLibrary.h"
 #include "Utilities.h"
 
-// Mapper dll variables
-std::list<std::string> writeBuffer;
-std::string currentFileName;
-const std::string outputFilePath;
-size_t totalBufferCount;
-
-MAPPERLIBRARY_EXPORTS void Map(const std::filesystem::path& filePath, const std::string& line) {
+__declspec(dllexport) void Map(const std::filesystem::path& filePath, const std::string& line, const std::filesystem::path& tempOutputPath) {
 	auto tokens = Utilities::SplitAndClean(line);
-	totalBufferCount = tokens.size();
-
-	for (const std::string& token : tokens) {
-		ExportData(filePath, token);
-	}
+	ExportData(filePath, tokens, tempOutputPath);
 }
 
-MAPPERLIBRARY_EXPORTS void ExportData(const std::filesystem::path& filePath, const std::string& token) {
-	if (!token.empty()) {
+void ExportData(const std::filesystem::path& filePath, const std::vector<std::string>& tokens, const std::filesystem::path& tempOutputPath) {
+	
+	std::list<std::string> writeBuffer;
+
+	for (const auto& token : tokens) {
 		writeBuffer.push_back(token + " 1");
-		totalBufferCount--;
 	}
 
-	if (currentFileName != filePath.filename().string() || totalBufferCount == 0) {
-
-		if (!currentFileName.empty() && totalBufferCount == 0) {
-
-			// write the buffer to the file
-			if (std::filesystem::exists(outputFilePath + "\\" + currentFileName)) {
-				Utilities::WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::app);
-			}
-			else {
-				Utilities::WriteBufferToFile(writeBuffer, outputFilePath + "\\" + currentFileName, std::ios::out);
-			}
-
-			// clear the buffer after writing
-			writeBuffer.clear();
-		}
-		currentFileName.assign(filePath.filename().string());
+	// write the buffer to the file
+	if (std::string tempFileName = tempOutputPath.string() + "\\" + filePath.filename().string(); std::filesystem::exists(tempFileName)) {
+		Utilities::WriteBufferToFile(writeBuffer, tempFileName, std::ios::app);
 	}
+	else {
+		Utilities::WriteBufferToFile(writeBuffer, tempFileName, std::ios::out);
+	}
+
+	// clear the buffer after writing
+	writeBuffer.clear();
 }

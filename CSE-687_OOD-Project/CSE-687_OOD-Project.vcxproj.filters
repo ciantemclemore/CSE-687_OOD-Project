@@ -18,9 +18,6 @@
     <ClCompile Include="Executive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Mapper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Reducer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -29,9 +26,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Mapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Reducer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
