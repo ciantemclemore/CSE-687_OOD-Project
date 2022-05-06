@@ -3,7 +3,7 @@
 #include "MapperLibrary.h"
 #include "Utilities.h"
 
-// dll variables
+// Mapper dll variables
 std::list<std::string> writeBuffer;
 std::string currentFileName;
 const std::string outputFilePath;
