@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../MapperLibrary/MapperLibrary.h"
+#include "../MapReduceLibrary/MapperLibrary.h"
 #include "../CSE-687_OOD-Project/Sorter.h"
 
 class MapAndSortTest : public ::testing::Test {

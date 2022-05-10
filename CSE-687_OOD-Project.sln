@@ -9,7 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CSE-687_OOD-Project-Unit-Te
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UtilityLibrary", "UtilityLibrary\UtilityLibrary.vcxproj", "{0A338E13-83FE-4860-94E7-406AD5E51C82}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MapperLibrary", "MapperLibrary\MapperLibrary.vcxproj", "{89B9BF83-E6B9-477D-BF0C-642D2B5BE603}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MapReduceLibrary", "MapReduceLibrary\MapperLibrary.vcxproj", "{89B9BF83-E6B9-477D-BF0C-642D2B5BE603}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
