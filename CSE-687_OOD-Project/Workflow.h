@@ -5,6 +5,8 @@
 #include "Reducer.h"
 #include "Sorter.h"
 #include "map"
+#include "filesystem"
+#include <wtypes.h>
 
 /// <summary>
 /// The workflow class will tie together the use of the mapper and reducer classes.
