@@ -53,7 +53,7 @@ void Utilities::ToLower(std::string& entry) {
 	}
 }
 
-std::vector<std::filesystem::path> Utilities::GetFilesInDirectory(const std::string& directory) {
+std::vector<std::filesystem::path> Utilities::GetFilesInDirectory(const std::filesystem::path& directory) {
 
 	std::vector<std::filesystem::path> files;
 
@@ -93,7 +93,7 @@ std::vector<std::string> Utilities::GetFileLines(const std::filesystem::path& pa
 	return fileLines;
 }
 
-void Utilities::WriteBufferToFile(const std::list<std::string>& buffer, const std::string& path, std::ios_base::openmode mode) {
+void Utilities::WriteBufferToFile(const std::list<std::string>& buffer, const std::filesystem::path& path, std::ios_base::openmode mode) {
 
 	std::fstream file;
 	file.open(path, mode);
