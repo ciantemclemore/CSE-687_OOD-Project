@@ -20,12 +20,12 @@ public:
 	static void ToLower(std::string& entry);
 	
 	// Returns all file paths in a specified directory
-	static std::vector<std::filesystem::path> GetFilesInDirectory(const std::string& directory);
+	static std::vector<std::filesystem::path> GetFilesInDirectory(const std::filesystem::path& directory);
 	
 	// Breaks down every line of a text file and returns them as individual string entry's
 	static std::vector<std::string> GetFileLines(const std::filesystem::path& path);
 	
 	// Writes buffer data to a specified file
-	static void WriteBufferToFile(const std::list<std::string>& buffer, const std::string& path, std::ios_base::openmode mode);
+	static void WriteBufferToFile(const std::list<std::string>& buffer, const std::filesystem::path& path, std::ios_base::openmode mode);
 };
 

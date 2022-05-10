@@ -3,7 +3,7 @@
 /// <summary>
 /// Constructor
 /// </summary>
-Reducer::Reducer(const std::string& outputFilePath) : outputFilePath(outputFilePath) {
+Reducer::Reducer(const std::filesystem::path& outputFilePath) : outputFilePath(outputFilePath) {
 }
 
 /// <summary>
@@ -29,5 +29,5 @@ void Reducer::ExportData(const std::string& key, int reducedData) { //reduced da
 	std::list<std::string> buffer = std::list <std::string> ();
 	std::string content = key + " " + std::to_string(reducedData);
 	buffer.push_back(content);
-	Utilities::WriteBufferToFile(buffer, outputFilePath + "\\" + "finalOutput.txt", std::ios::app);
+	Utilities::WriteBufferToFile(buffer, outputFilePath.string() + "\\" + "finalOutput.txt", std::ios::app);
 }

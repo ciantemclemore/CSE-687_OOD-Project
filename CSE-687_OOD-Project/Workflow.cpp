@@ -3,16 +3,16 @@
 /// <summary>
 /// Constructor to initialize the workflow component
 /// </summary>
-Workflow::Workflow(const std::string& inputDir, const std::string& tempDir, const std::string& outputDir) : inputDirectory(inputDir), tempDirectory(tempDir), outputDirectory(outputDir) {
+Workflow::Workflow(const std::filesystem::path& inputDir, const std::filesystem::path& tempDir, const std::filesystem::path& outputDir, const wchar_t* dllPath)
+	: inputDirectory(inputDir), tempDirectory(tempDir), outputDirectory(outputDir), mapReduceDllPath(dllPath) {
 }
 
-void Workflow::Init() const {
+bool Workflow::Init() const {
 
 	HINSTANCE mapLibraryHandle;
 	FuncMap Map;
-	const wchar_t* libraryName = L"MapperLibrary";
 
-	mapLibraryHandle = LoadLibraryEx(libraryName, nullptr, NULL);
+	mapLibraryHandle = LoadLibraryEx(mapReduceDllPath, nullptr, NULL);
 
 	if (mapLibraryHandle != nullptr) {
 		Map = (FuncMap)GetProcAddress(mapLibraryHandle, "Map");
@@ -32,27 +32,32 @@ void Workflow::Init() const {
 				Map(file, line, tempDirectory);
 			}
 		}
+
+		// Get the intermediate files after mapping and begin sorting/aggregation
+		Sorter sorter;
+		std::vector<std::filesystem::path> tempFiles = Utilities::GetFilesInDirectory(tempDirectory);
+
+		// Notify the user that sorting and aggregating is taking place
+		std::cout << "Sorting and Aggregating all intermediate files..." << std::endl;
+
+		std::map<std::string, std::vector<int>, std::less<>> sortedContainer = sorter.sortAndAggregate(tempFiles);
+
+
+		// Notify the user that reducing is beginning
+		std::cout << "Reducing process is beginning..." << std::endl;
+
+		// Begin the reducing phase
+		Reducer reducer(outputDirectory);
+
+		// Call reduce on each key
+		for (const auto& [key, value] : sortedContainer) {
+			std::cout << "Reducing " << "'" << key << "' key" << std::endl;
+			reducer.Reduce(key, value);
+		}
+		return true;
 	}
-
-	// Get the intermediate files after mapping and begin sorting/aggregation
-	Sorter sorter;
-	std::vector<std::filesystem::path> tempFiles = Utilities::GetFilesInDirectory(tempDirectory);
-
-	// Notify the user that sorting and aggregating is taking place
-	std::cout << "Sorting and Aggregating all intermediate files..." << std::endl;
-
-	std::map<std::string, std::vector<int>, std::less<>> sortedContainer = sorter.sortAndAggregate(tempFiles);
-
-
-	// Notify the user that reducing is beginning
-	std::cout << "Reducing process is beginning..." << std::endl;
-
-	// Begin the reducing phase
-	Reducer reducer(outputDirectory);
-
-	// Call reduce on each key
-	for (const auto& [key, value] : sortedContainer) {
-		std::cout << "Reducing " << "'" << key << "' key" << std::endl;
-		reducer.Reduce(key, value);
+	else {
+		std::cout << "MapReduce DLL could not be loaded. Please verify the path to the MapReduce DLL file name." << std::endl;
+		return false;
 	}
 }

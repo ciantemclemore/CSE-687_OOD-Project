@@ -4,6 +4,7 @@
 #include "Reducer.h"
 #include "Sorter.h"
 #include "map"
+#include "filesystem"
 #include <wtypes.h>
 
 using FuncMap = void (*)(const std::filesystem::path& filePath, const std::string& line, const std::filesystem::path& tempOutputPath);
@@ -17,11 +18,12 @@ using FuncMap = void (*)(const std::filesystem::path& filePath, const std::strin
 class Workflow
 {
 private:
-	const std::string inputDirectory;
-	const std::string tempDirectory;
-	const std::string outputDirectory;
+	const std::filesystem::path inputDirectory;
+	const std::filesystem::path tempDirectory;
+	const std::filesystem::path outputDirectory;
+	const wchar_t* mapReduceDllPath;
 public:
-	Workflow(const std::string& inputDir, const std::string& tempDir, const std::string& outputDir);
-	void Init() const;
+	Workflow(const std::filesystem::path& inputDir, const std::filesystem::path& tempDir, const std::filesystem::path& outputDir, const wchar_t* dllPath);
+	bool Init() const;
 };
 
