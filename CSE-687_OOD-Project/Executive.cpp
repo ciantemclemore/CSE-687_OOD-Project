@@ -17,31 +17,51 @@
 /// <returns></returns>
 int main(int argc, char* argv[])
 {
-    // The program should accept 3 inputs (plus the included default argument, i.e Name of the program)
-    if (argc < 4) {
-        std::cout << "Missing input arguments, try again!" << std::endl;
+    // The program should accept at least 2 inputs (i.e Name of the program & directory for input files)
+    // If their are more than 2 arguments, the user may have provided an intermediate and output directory
+    if (argc < 2) {
+        std::cout << "Missing input files directory, try again!" << std::endl;
         exit(0);
     }
 
-    if (std::filesystem::is_directory(argv[1]) && std::filesystem::is_directory(argv[2]) && std::filesystem::is_directory(argv[3])) {
+    // save the input directory as a path (this is done to follow our "path" standard)
+    std::filesystem::path inputDir = argv[1];
+
+    // If the user doesn't supply a temp and output directory, we will create it for them
+    std::filesystem::path tempDir =  argc > 2  ? argv[2] : std::filesystem::current_path().string() + "\\tempfiles";
+    std::filesystem::path outputDir = argc > 3 ? argv[3] : std::filesystem::current_path().string() + "\\outputfiles";
+    auto mapReduceDllName = std::filesystem::path(argv[4]); // convert the char* to a path so that we can successfully convert to a wchar_t*
+    const wchar_t* mapReduceLibraryName = argc > 4 ? mapReduceDllName.c_str() : L"MapperLibrary.dll";
+
+    // create the directories for the temp/intermidate and final output files
+    std::filesystem::create_directory(tempDir);
+    std::filesystem::create_directory(outputDir);
+
+    if (std::filesystem::is_directory(inputDir) && std::filesystem::is_directory(tempDir) && std::filesystem::is_directory(outputDir)) {
         // Give the input, output, and temp directories to the workflow component.
-        Workflow workflow(argv[1], argv[2], argv[3]);
+        Workflow workflow(inputDir, tempDir, outputDir, mapReduceLibraryName);
 
-        // Update the user
+        // Update the user that the process is starting 
         std::cout << "Beginning Processing..." << std::endl;
-        workflow.Init();
-
-        // file cleanup
-        auto files = Utilities::GetFilesInDirectory(argv[2]);
-        for (const auto& file : files) {
-            if (file.filename().string() != "readme.txt") {
-                remove(file);
+        if (workflow.Init()) {
+            // temp file cleanup
+            auto files = Utilities::GetFilesInDirectory(tempDir);
+            for (const auto& file : files) {
+                if (file.filename().string() != "readme.txt") {
+                    remove(file);
+                }
             }
+        
+            // remove the temp directory
+            std::filesystem::remove(tempDir);
+
+            std::cout << "All temp files cleaned up in " << tempDir << std::endl;
+
+            std::cout << "Final Output File at: " << outputDir << std::endl;
         }
-        std::cout << "All files cleaned up in " << argv[2] << std::endl;
-    
-        std::cout << "Operation Complete, press <Enter>" << std::endl;
-        std::cin.get();
+        else {
+            exit(0);
+        }
     }
     else {
         std::cout << "One or more of the provided file directories don't exist. Retry!";

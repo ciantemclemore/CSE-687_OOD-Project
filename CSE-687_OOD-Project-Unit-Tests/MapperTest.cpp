@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../CSE-687_OOD-Project/Mapper.cpp"
+#include "../MapReduceLibrary/MapperLibrary.h"
 #include "../CSE-687_OOD-Project/Sorter.h"
 
 class MapAndSortTest : public ::testing::Test {
@@ -12,14 +12,13 @@ public:
 
 
 TEST_F(MapAndSortTest, TestMapAndExportData) {
-	
-	Mapper mapper("../CSE-687_OOD-Project/tempfiles/");
+
 	std::cout << "Mapping Files..." << std::endl;
 	for (const std::filesystem::path& path : files) {
 		std::vector<std::string> fileLines = Utilities::GetFileLines(path);
 
 		for (const std::string& line : fileLines) {
-			mapper.Map(path, line);
+			Map(path, line,"../CSE-687_OOD-Project/tempfiles/");
 			
 			// test if the intermediate file was created and its data
 			std::filesystem::path outputPath = "../CSE-687_OOD-Project/tempfiles/" + path.filename().string();
@@ -32,15 +31,14 @@ TEST_F(MapAndSortTest, TestMapAndExportData) {
 
 
 TEST_F(MapAndSortTest, TestSort) {
-	
-	Mapper mapper("../CSE-687_OOD-Project/tempfiles/");
+
 	Sorter sorter;
 
 	std::filesystem::path testInputFile = files[0];
 	std::vector<std::string> testInputFileLines = Utilities::GetFileLines(testInputFile);
 
 	for (const std::string& line : testInputFileLines) {
-		mapper.Map(testInputFile, line);
+		Map(testInputFile, line,"../CSE-687_OOD-Project/tempfiles/");
 	}
 
 	// now test sorting on the mapper file
