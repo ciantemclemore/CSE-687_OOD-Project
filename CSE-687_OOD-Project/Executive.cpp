@@ -7,10 +7,11 @@
 #include "string"
 #include "Utilities.h"
 /// <summary>
-/// The main function will accept 3 command line arguments.
+/// The main function will accept  command line arguments.
 /// 1. Directory that holds the input files to MapReduce
 /// 2. Diectory to hold output files
 /// 3. Temporary directory to hold intermediate output files
+/// 4. Path to a MapReduce DLL
 /// </summary>
 /// <param name="argc">The number of arguments passed to the command line</param>
 /// <param name="argv">An array of char pointers that contain all the arguments</param>
@@ -30,8 +31,8 @@ int main(int argc, char* argv[])
     // If the user doesn't supply a temp and output directory, we will create it for them
     std::filesystem::path tempDir =  argc > 2  ? argv[2] : std::filesystem::current_path().string() + "\\tempfiles";
     std::filesystem::path outputDir = argc > 3 ? argv[3] : std::filesystem::current_path().string() + "\\outputfiles";
-    auto mapReduceDllName = std::filesystem::path(argv[4]); // convert the char* to a path so that we can successfully convert to a wchar_t*
-    const wchar_t* mapReduceLibraryName = argc > 4 ? mapReduceDllName.c_str() : L"MapperLibrary.dll";
+    auto mapReduceDllName = argc > 4 ? std::filesystem::path(argv[4]) : L""; // convert the char* to a path so that we can successfully convert to a wchar_t*
+    const wchar_t* mapReduceLibraryName = !(mapReduceDllName.empty()) ? mapReduceDllName.c_str() : L"MapReduceLibrary.dll";
 
     // create the directories for the temp/intermidate and final output files
     std::filesystem::create_directory(tempDir);

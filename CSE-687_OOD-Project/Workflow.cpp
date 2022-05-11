@@ -9,13 +9,16 @@ Workflow::Workflow(const std::filesystem::path& inputDir, const std::filesystem:
 
 bool Workflow::Init() const {
 
-	HINSTANCE mapLibraryHandle;
+	HINSTANCE mapReduceLibraryHandle;
 	FuncMap Map;
+	FuncReduce Reduce;
 
-	mapLibraryHandle = LoadLibraryEx(mapReduceDllPath, nullptr, NULL);
+	mapReduceLibraryHandle = LoadLibraryEx(mapReduceDllPath, nullptr, NULL);
 
-	if (mapLibraryHandle != nullptr) {
-		Map = (FuncMap)GetProcAddress(mapLibraryHandle, "Map");
+	if (mapReduceLibraryHandle != nullptr) {
+		
+		Map = (FuncMap)GetProcAddress(mapReduceLibraryHandle, "Map");
+		Reduce = (FuncReduce)GetProcAddress(mapReduceLibraryHandle, "Reduce");
 
 		// Map the files so that they can be sorted and reduced later
 		std::vector<std::filesystem::path> inputFiles = Utilities::GetFilesInDirectory(inputDirectory);
@@ -46,13 +49,10 @@ bool Workflow::Init() const {
 		// Notify the user that reducing is beginning
 		std::cout << "Reducing process is beginning..." << std::endl;
 
-		// Begin the reducing phase
-		Reducer reducer(outputDirectory);
-
 		// Call reduce on each key
 		for (const auto& [key, value] : sortedContainer) {
 			std::cout << "Reducing " << "'" << key << "' key" << std::endl;
-			reducer.Reduce(key, value);
+			Reduce(key, value, outputDirectory);
 		}
 		return true;
 	}
