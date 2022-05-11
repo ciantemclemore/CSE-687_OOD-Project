@@ -18,17 +18,11 @@
     <ClCompile Include="Executive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Reducer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Workflow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Reducer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Workflow.h">
       <Filter>Header Files</Filter>
     </ClInclude>

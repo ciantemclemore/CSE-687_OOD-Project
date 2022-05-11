@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../CSE-687_OOD-Project/Reducer.cpp"
+#include "../MapReduceLibrary/ReducerLibrary.h"
 
 class ReduceAndOutputTest : public ::testing::Test {
 public:
@@ -20,10 +20,8 @@ public:
 };
 
 TEST_F(ReduceAndOutputTest, ReduceTempAndOutputFinal) {
-	Reducer reducer1("../CSE-687_OOD-Project/outputfiles/");
-
 	for (const auto& sortedPair : testContainer) { //call premade map of words and instances
-		reducer1.Reduce(sortedPair.first, sortedPair.second); //takes string of key, and vector of integers of iterations
+		Reduce(sortedPair.first, sortedPair.second, "../CSE-687_OOD-Project/outputfiles/"); //takes string of key, and vector of integers of iterations
 	}
 
 	// test if the final output file was created with correct format
