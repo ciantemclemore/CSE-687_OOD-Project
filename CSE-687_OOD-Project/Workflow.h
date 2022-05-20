@@ -5,9 +5,11 @@
 #include "map"
 #include "filesystem"
 #include <wtypes.h>
+#include "thread"
+#include "cmath"
 
-using FuncMap = void (*)(const std::filesystem::path& filePath, const std::string& line, const std::filesystem::path& tempOutputPath);
-using FuncReduce = void (*)(const std::string& key, const std::vector<int>& iterations, const std::filesystem::path& outputFilePath);
+using FuncMap = void (*)(const std::vector<std::filesystem::path>& filePaths, const std::filesystem::path& tempOutputPath);
+using FuncReduce = void (*)(const std::vector<std::filesystem::path>& filePaths, const std::filesystem::path& outputFilePath);
 
 /// <summary>
 /// The workflow class will tie together the use of the mapper and reducer classes.

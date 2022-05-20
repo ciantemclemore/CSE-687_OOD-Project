@@ -4,19 +4,53 @@
 #include "ReducerLibrary.h"
 #include "Utilities.h"
 
-__declspec(dllexport) void Map(const std::filesystem::path& filePath, const std::string& line, const std::filesystem::path& tempOutputPath) {
-	auto tokens = Utilities::SplitAndClean(line);
-	ExportData(filePath, tokens, tempOutputPath);
+__declspec(dllexport) void Map(const std::vector<std::filesystem::path>& filePaths, const std::filesystem::path& tempOutputPath) {
+	
+	// Get all the lines in a specified file
+	for (const auto& filePath : filePaths) 
+	{
+		std::vector<std::string> fileLines = Utilities::GetFileLines(filePath);
+		
+		// Get all the tokens for the each line and begin writing
+		for (const std::string& line : fileLines) {
+			auto tokens = Utilities::SplitAndClean(line);
+			ExportData(filePath, tokens, tempOutputPath);
+		}
+	}
 }
 
-__declspec(dllexport) void Reduce(const std::string& key, const std::vector<int>& iterations, const std::filesystem::path& outputFilePath) {
+__declspec(dllexport) void Reduce(const std::vector<std::filesystem::path>& filePaths, const std::filesystem::path& outputFilePath) {
 
-	// Sum up the iterations
-	int totalCount = 0;
-	for (int i = 0; i < iterations.size(); i++) {
-		totalCount += iterations[i];
+	// Sort and aggregate the given files
+	static std::map<std::string, std::vector<int>, std::less<>> sortContainer;
+	static std::mutex m;
+
+	for (const auto& filePath : filePaths)
+	{
+		std::vector<std::string> fileLines = Utilities::GetFileLines(filePath);
+
+		// Get all the tokens for the each line and begin writing
+		for (const std::string& line : fileLines) {
+			
+			auto tokens = Utilities::Split(line);
+
+			std::string sortKey = tokens[0];
+			
+			std::lock_guard lock(m);
+			// place the token in the map if it doesn't exist.. else - push to the tokens current vector
+			if (!sortContainer.try_emplace(sortKey, 1, 1).second) {
+				sortContainer[sortKey].push_back(1);
+			}
+		}
 	}
-	ExportData(key, totalCount, outputFilePath);
+
+
+	//// Sum up the iterations
+	//int totalCount = 0;
+	//for (int i = 0; i < iterations.size(); i++) {
+	//	totalCount += iterations[i];
+	//}
+	//ExportData(key, totalCount, outputFilePath);
 }
 
 /// <summary>

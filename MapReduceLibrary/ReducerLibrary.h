@@ -2,7 +2,9 @@
 #pragma once
 #include "filesystem"
 #include "string"
+#include "map"
+#include "mutex"
 
-extern "C" __declspec(dllexport) void Reduce(const std::string& key, const std::vector<int>& iterations, const std::filesystem::path& outputFilePath);
+extern "C" __declspec(dllexport) void Reduce(const std::vector<std::filesystem::path>&filePaths, const std::filesystem::path& outputFilePath);
 void ExportData(const std::string& key, const int reducedData, const std::filesystem::path& outputFilePath);
 
