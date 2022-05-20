@@ -88,7 +88,7 @@ bool Workflow::Init() const {
 				files.push_back(tempFiles[j]);
 			}
 			// Pass the list of files for the map function (can either send vector of files, or make another 'for-loop' to go through each file in each vector
-			reducerThreads.push_back(std::thread(Reduce, files, outputDirectory));
+			reducerThreads.push_back(std::thread(Reduce, files, tempFiles.size(), outputDirectory));
 		}
 
 		// wait until each mapperThread finishes processing their files

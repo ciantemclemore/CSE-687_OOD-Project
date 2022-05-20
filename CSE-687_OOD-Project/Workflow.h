@@ -9,7 +9,7 @@
 #include "cmath"
 
 using FuncMap = void (*)(const std::vector<std::filesystem::path>& filePaths, const std::filesystem::path& tempOutputPath);
-using FuncReduce = void (*)(const std::vector<std::filesystem::path>& filePaths, const std::filesystem::path& outputFilePath);
+using FuncReduce = void (*)(const std::vector<std::filesystem::path>& filePaths, int totalFileCount, const std::filesystem::path& outputFilePath);
 
 /// <summary>
 /// The workflow class will tie together the use of the mapper and reducer classes.
