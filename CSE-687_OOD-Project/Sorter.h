@@ -17,7 +17,7 @@ public:
 			for (const std::string& key : keys) {
 
 				// get all the tokens in the line
-				std::vector<std::string> tokens = Utilities::SplitAndClean(key);
+				std::vector<std::string> tokens = Utilities::Split(key);
 
 				// get the first token, which will be the key
 				std::string sortKey = tokens[0];

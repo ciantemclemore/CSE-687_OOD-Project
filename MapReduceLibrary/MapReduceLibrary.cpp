@@ -4,19 +4,58 @@
 #include "ReducerLibrary.h"
 #include "Utilities.h"
 
-__declspec(dllexport) void Map(const std::filesystem::path& filePath, const std::string& line, const std::filesystem::path& tempOutputPath) {
-	auto tokens = Utilities::SplitAndClean(line);
-	ExportData(filePath, tokens, tempOutputPath);
+__declspec(dllexport) void Map(const std::vector<std::filesystem::path>& filePaths, const std::filesystem::path& tempOutputPath) {
+	
+	// Get all the lines in a specified file
+	for (const auto& filePath : filePaths) 
+	{
+		std::vector<std::string> fileLines = Utilities::GetFileLines(filePath);
+		
+		// Get all the tokens for the each line and begin writing
+		for (const std::string& line : fileLines) {
+			auto tokens = Utilities::SplitAndClean(line);
+			ExportData(filePath, tokens, tempOutputPath);
+		}
+	}
 }
 
-__declspec(dllexport) void Reduce(const std::string& key, const std::vector<int>& iterations, const std::filesystem::path& outputFilePath) {
+__declspec(dllexport) void Reduce(const std::vector<std::filesystem::path>& filePaths, int totalFileCount, const std::filesystem::path& outputFilePath) {
 
-	// Sum up the iterations
-	int totalCount = 0;
-	for (int i = 0; i < iterations.size(); i++) {
-		totalCount += iterations[i];
+	// Sort and aggregate the given files
+	static std::map<std::string, std::vector<int>, std::less<>> sortContainer;
+	static int count = 0;
+	static std::mutex s_mutex;
+	static std::mutex c_mutex;
+
+	for (const auto& filePath : filePaths)
+	{
+		std::vector<std::string> fileLines = Utilities::GetFileLines(filePath);
+
+		// Get all the tokens for the each line and begin writing
+		for (const std::string& line : fileLines) {
+			
+			auto tokens = Utilities::Split(line);
+
+			std::string sortKey = tokens[0];
+			
+			std::lock_guard lock(s_mutex);
+			// place the token in the map if it doesn't exist.. else - push to the tokens current vector
+			if (!sortContainer.try_emplace(sortKey, 1, 1).second) {
+				sortContainer[sortKey].push_back(1);
+			}
+		}
+		{
+			std::lock_guard lock(c_mutex);
+			count++;
+		}
 	}
-	ExportData(key, totalCount, outputFilePath);
+
+	if (count == totalFileCount) {
+		for (const auto& [key, value] : sortContainer)
+		{
+			ExportData(key, value.size(), outputFilePath);
+		}
+	}
 }
 
 /// <summary>
@@ -34,7 +73,7 @@ void ExportData(const std::filesystem::path& filePath, const std::vector<std::st
 	}
 
 	// write the buffer to the file
-	if (std::string tempFileName = tempOutputPath.string() + "\\" + filePath.filename().string(); std::filesystem::exists(tempFileName)) {
+	if (std::filesystem::path tempFileName = tempOutputPath.string() + "\\" + filePath.filename().string(); std::filesystem::exists(tempFileName)) {
 		Utilities::WriteBufferToFile(writeBuffer, tempFileName, std::ios::app);
 	}
 	else {
@@ -52,7 +91,7 @@ void ExportData(const std::filesystem::path& filePath, const std::vector<std::st
 /// not directly deal with an File IO.
 /// </summary>
 void ExportData(const std::string& key, int reducedData, const std::filesystem::path& outputFilePath) { //reduced data
-	std::list<std::string> buffer = std::list<std::string>();
+	std::list<std::string> buffer;
 	std::string content = key + " " + std::to_string(reducedData);
 	buffer.push_back(content);
 	Utilities::WriteBufferToFile(buffer, outputFilePath.string() + "\\" + "finalOutput.txt", std::ios::app);

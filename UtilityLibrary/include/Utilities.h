@@ -12,12 +12,12 @@ class Utilities
 public:
 	// Splits a string entry by space and selected special characters
 	static std::vector<std::string> SplitAndClean(const std::string& entry);
+
+	// Only splits a string by space
+	static std::vector<std::string> Split(const std::string& entry);
 	
 	// Removes special characters from a string entry
 	static std::string RemoveSpecialCharacters(const std::string& entry);
-	
-	// Makes every character of a string lowercase
-	static void ToLower(std::string& entry);
 	
 	// Returns all file paths in a specified directory
 	static std::vector<std::filesystem::path> GetFilesInDirectory(const std::filesystem::path& directory);

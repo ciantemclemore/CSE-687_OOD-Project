@@ -20,9 +20,24 @@ std::vector<std::string> Utilities::SplitAndClean(const std::string& entry) {
 		auto newWord = RemoveSpecialCharacters(x);
 
 		if (!newWord.empty()) {
-			ToLower(newWord);
 			tokens.push_back(newWord);
 		}
+	}
+
+	return tokens;
+}
+
+std::vector<std::string> Utilities::Split(const std::string& entry) {
+	
+	// push the string to the stream
+	std::stringstream stream(entry);
+
+	// create a list that will store the split tokens
+	std::vector<std::string> tokens;
+
+	std::string word;
+	while (stream >> word) {
+		tokens.push_back(word);
 	}
 
 	return tokens;
@@ -34,23 +49,22 @@ std::string Utilities::RemoveSpecialCharacters(const std::string& entry) {
 
 	if (!temp.empty()) {
 
-		for (int i = 0; i < temp.size(); i++) {
+		int i = 0;
+		while (i < temp.size()) 
+		{
 			if ((temp[i] < 'A' || temp[i] > 'Z') && (temp[i] < 'a' || temp[i] > 'z') && temp[i] != '\0') {
 				temp.erase(i, 1);
 				i--;
 			}
+			else {
+				// lower case the word
+				temp[i] = (char)std::tolower(temp[i]);
+			}
+			i++;
 		}
 	}
 
 	return temp;
-}
-
-void Utilities::ToLower(std::string& entry) {
-	for (char& c : entry) {
-		// only want to do characters that are in range of 65-90 (A-Z)
-		if (c < 97)
-			c = (char)std::tolower(c);
-	}
 }
 
 std::vector<std::filesystem::path> Utilities::GetFilesInDirectory(const std::filesystem::path& directory) {
