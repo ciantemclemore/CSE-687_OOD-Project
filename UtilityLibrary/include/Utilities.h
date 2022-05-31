@@ -19,9 +19,6 @@ public:
 	// Removes special characters from a string entry
 	static std::string RemoveSpecialCharacters(const std::string& entry);
 	
-	// Makes every character of a string lowercase
-	static void ToLower(std::string& entry);
-	
 	// Returns all file paths in a specified directory
 	static std::vector<std::filesystem::path> GetFilesInDirectory(const std::filesystem::path& directory);
 	

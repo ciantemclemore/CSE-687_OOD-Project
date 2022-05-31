@@ -51,19 +51,11 @@ __declspec(dllexport) void Reduce(const std::vector<std::filesystem::path>& file
 	}
 
 	if (count == totalFileCount) {
-		for (const auto& [key, value] : sortContainer) 
+		for (const auto& [key, value] : sortContainer)
 		{
 			ExportData(key, value.size(), outputFilePath);
 		}
 	}
-
-
-	//// Sum up the iterations
-	//int totalCount = 0;
-	//for (int i = 0; i < iterations.size(); i++) {
-	//	totalCount += iterations[i];
-	//}
-	//ExportData(key, totalCount, outputFilePath);
 }
 
 /// <summary>
@@ -81,7 +73,7 @@ void ExportData(const std::filesystem::path& filePath, const std::vector<std::st
 	}
 
 	// write the buffer to the file
-	if (std::string tempFileName = tempOutputPath.string() + "\\" + filePath.filename().string(); std::filesystem::exists(tempFileName)) {
+	if (std::filesystem::path tempFileName = tempOutputPath.string() + "\\" + filePath.filename().string(); std::filesystem::exists(tempFileName)) {
 		Utilities::WriteBufferToFile(writeBuffer, tempFileName, std::ios::app);
 	}
 	else {
@@ -99,7 +91,7 @@ void ExportData(const std::filesystem::path& filePath, const std::vector<std::st
 /// not directly deal with an File IO.
 /// </summary>
 void ExportData(const std::string& key, int reducedData, const std::filesystem::path& outputFilePath) { //reduced data
-	std::list<std::string> buffer = std::list<std::string>();
+	std::list<std::string> buffer;
 	std::string content = key + " " + std::to_string(reducedData);
 	buffer.push_back(content);
 	Utilities::WriteBufferToFile(buffer, outputFilePath.string() + "\\" + "finalOutput.txt", std::ios::app);
