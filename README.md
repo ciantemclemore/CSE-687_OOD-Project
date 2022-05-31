@@ -17,10 +17,14 @@ The project can be executed in one of two ways, by running via visual studio, or
      - .\inputfiles
      - .\tempfiles
      - .\outputfiles
+   - Right click the solution `"CSE-687_OOD-Project"` and select `Rebuild Solution`
+     - This will ensure the binaries are created for the DLL projects as well as the main client application.
    - Click the green “play” button in Visual Studio to run the project in debug mode. (Or press Ctrl +F5 to run without debugging).
 
 
 ### <ins> Via Command Line:</ins>
+   - Open the project in Visual studio and right click the solution `"CSE-687_OOD-Project"` and select `Rebuild Solution`
+     - This will ensure the binaries are created for the DLL projects as well as the main client application. 
    - Open your command line prompt
    - Change directories (cd – command on windows) until you are within the `“\CSE-687_OOD-Project\x64\Debug”` directory of the project.
    - Once you are in this directory, you can start the program by running the following command: 
