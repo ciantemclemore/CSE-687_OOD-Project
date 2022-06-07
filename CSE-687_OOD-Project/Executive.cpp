@@ -31,30 +31,35 @@ int main(int argc, char* argv[])
         error("error initializing WSA Startup");
     }
 
+    std::string converter;
+    char message[1024];
+    sockaddr_in address;
+
     // create a socket to connect to the server
     size_t sock;
-    if (sock = socket(AF_INET, SOCK_STREAM, 0) == -1) {
+    if ((sock = socket(AF_INET, SOCK_STREAM, NULL)) == -1) {
         error("error opening the socket");
     }
 
     // define the server address that the client wants to connect to
-    struct sockaddr_in address = {};
-    socklen_t address_size = sizeof address;
+    inet_pton(AF_INET, "127.0.0.1", &address.sin_addr.s_addr);
     address.sin_family = AF_INET;
-    address.sin_port = htons(5500);
-    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(8080);
+   
 
     // try connecting to the server
-    if (int connection_status = connect(sock, (struct sockaddr*)&address, address_size); connection_status == -1) {
+    if (int connection_status = connect(sock, (struct sockaddr*)&address, sizeof(address)); connection_status == -1) {
         std::cout << WSAGetLastError() << std::endl;
         error("error connecting to the server socekt");
     }
+    else {
+        recv(sock, message, sizeof(message), NULL);
+        converter = message;
+        std::cout << converter << std::endl;
+        std::cin.get();
+    }
 
-    // now we can send the data to the server
-    std::string message = "Hello, I am client 1";
-    send(sock, message.data(), sizeof(message), 0);
-
-    closesocket(sock);
+    
 
 
 

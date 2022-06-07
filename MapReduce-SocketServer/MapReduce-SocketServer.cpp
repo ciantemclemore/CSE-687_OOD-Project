@@ -18,59 +18,47 @@ int main()
         error("error initializing WSA Startup");
     }
 
-    // create the server socket
-    size_t server_socket;
-    server_socket = socket(AF_INET, SOCK_STREAM, NULL);
-    if (server_socket == -1) {
-        error("error opening the socket");
-    }
+    sockaddr_in address;
+    int address_size = sizeof(address);
 
-    // specify the server address
-    struct sockaddr_in address = {};
-    socklen_t address_size = sizeof address;
+    // sockets
+    SOCKET socket_listen;
+    SOCKET socket_connection;
+
+    // socket creation
+  /*  socket_connection = socket(AF_INET, SOCK_STREAM, NULL);
+    if (socket_connection == -1) {
+        error("connect socket failed");
+    }*/
+
+    // socket formatting
+    inet_pton(AF_INET, "127.0.0.1", &address.sin_addr.s_addr);
     address.sin_family = AF_INET;
-    address.sin_port = htons(5500);
-    address.sin_addr.s_addr = INADDR_ANY;
-    
-    // bind the socket to an IP and PORT
-    // also check if binding is successful
-    if (int bind_status = bind(server_socket, (struct sockaddr*)&address, address_size); bind_status == -1) {
-        std::cout << WSAGetLastError() << std::endl;
-        error("error binding the socket");
+    address.sin_port = htons(8080);
+
+    // listen socket
+    socket_listen = socket(AF_INET, SOCK_STREAM, NULL);
+    if (socket_listen == -1) {
+        error("listen socket failed");
     }
 
+    // bind the listen socket
+    if (int bind_status = bind(socket_listen, (sockaddr*)&address, sizeof(address)); bind_status == -1) {
+        error("binding failed");
+    }
 
-    // set the socket to listen for incoming connections
-    // 10 - the backlog for the socket.. defines the total number of connections able to be queued
-    listen(server_socket, 10);
-
-    // the server is now listening for incoming connections
-    std::cout << "Listening for incoming connections..." << std::endl;
-
-    // once client connects, save the file descriptor for the successful connection
-    size_t client_socket;
+    // listen for incoming connections
+    listen(socket_listen, 10);
 
     for (;;) {
-        if (client_socket = accept(server_socket, (struct sockaddr*)&address, &address_size)) {
-            std::cout << "Received connection from " << inet_ntop(AF_INET, &address.sin_addr, nullptr, 0) << ":" << ntohs(address.sin_port) << std::endl;
-        }
-        else {
-            error("error accepting client connection");
-        }
-    }
-
-  /*  std::string clientMessage;
-
-    while (true) {
-        recv(client_socket, clientMessage.data(), sizeof(clientMessage), 0);
-
-        if (clientMessage.compare("quit") == 0) {
-            break;
+        std::cout << "Waiting for incoming connection..." << std::endl;
+        if ((socket_connection = accept(socket_listen, (sockaddr*)&address, &address_size)) != -1) {
+            std::cout << "successful connection to " << socket_connection << std::endl;
+            std::string welcome_message = "You are now connected";
+            send(socket_connection, welcome_message.c_str(), sizeof(welcome_message), NULL);
         }
     }
-
-    closesocket(client_socket);
-    closesocket(server_socket);*/
+   
 }
 
 void error(const std::string& message) {
