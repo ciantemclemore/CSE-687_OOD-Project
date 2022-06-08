@@ -1,4 +1,6 @@
 #pragma once
+#include <WinSock2.h>
+#include <WS2tcpip.h>
 #include <iostream>
 #include "Utilities.h"
 #include "Sorter.h"
@@ -24,11 +26,15 @@ private:
 	const std::filesystem::path tempDirectory;
 	const std::filesystem::path outputDirectory;
 	const wchar_t* mapReduceDllPath;
+	const unsigned short int BASEPORT = 20000;
 public:
 	Workflow(const std::filesystem::path& inputDir, const std::filesystem::path& tempDir, const std::filesystem::path& outputDir, const wchar_t* dllPath);
 	bool Init() const;
 	int MapperPartition(const std::vector<std::filesystem::path>& inputFiles, FuncMap map, int numMapperThreads = 5) const;
 	void ReducerPartition(const std::vector<std::filesystem::path>& tempFiles, FuncReduce reduce, int numOfReducerThreads) const;
 	void StartTasks(const std::vector<std::filesystem::path>& files, int numThreads, FuncMap map = nullptr, FuncReduce reduce = nullptr) const;
+	std::vector<PROCESS_INFORMATION> CreateServerProcesses() const;
+	void ProcessCleanup(const std::vector<PROCESS_INFORMATION>& proc_informations)const;
+	void Error(const std::string& message) const;
 };
 

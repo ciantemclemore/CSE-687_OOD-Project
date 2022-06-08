@@ -9,10 +9,6 @@
 #include "string"
 #include "Utilities.h"
 
-void error(const std::string& message) {
-    std::cout << message << std::endl;
-    exit(1);
-}
 /// <summary>
 /// The main function will accept  command line arguments.
 /// 1. Directory that holds the input files to MapReduce
@@ -25,76 +21,6 @@ void error(const std::string& message) {
 /// <returns></returns>
 int main(int argc, char* argv[])
 {
-    int basePort = 20000;
-
-    for (int i = 0; i < 3; i++) {
-        STARTUPINFO si = {};
-        PROCESS_INFORMATION pi = {};
-
-        ZeroMemory(&si, sizeof(si));
-        si.cb = sizeof(si);
-        ZeroMemory(&pi, sizeof(pi));
-
-        int portNumber = basePort + i;
-        std::string applicationName = "..\\x64\\Debug\\MapReduce-SocketServer.exe ";
-        std::string cmdArg = applicationName.append(std::to_string(portNumber));
-        wchar_t x[60];
-
-        // copy the command line argument string to the LPWSTR
-        for (int i = 0; i < cmdArg.size(); i++) 
-        {
-            x[i] = cmdArg[i];
-        }
-
-        if (!CreateProcess(L"..\\x64\\Debug\\MapReduce-SocketServer.exe", x , NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi)) {
-            std::cout << "Create Process failed " << GetLastError() << std::endl;
-            return 0;
-        }
-        else {
-            std::cout << "Server process successfully created" << std::endl;
-        }
-    }
-
-    // WSA Startup init
-    WSAData wsa_data = {};
-    if (long wsa_status = WSAStartup(MAKEWORD(2, 2), &wsa_data); wsa_status != 0) {
-        error("error initializing WSA Startup");
-    }
-
-    std::string converter;
-    char message[1024];
-    sockaddr_in address;
-
-    // create a socket to connect to the server
-    size_t sock;
-    if ((sock = socket(AF_INET, SOCK_STREAM, NULL)) == -1) {
-        error("error opening the socket");
-    }
-
-    // define the server address that the client wants to connect to
-    inet_pton(AF_INET, "127.0.0.1", &address.sin_addr.s_addr);
-    address.sin_family = AF_INET;
-    address.sin_port = htons(8080);
-   
-
-    // try connecting to the server
-    if (int connection_status = connect(sock, (struct sockaddr*)&address, sizeof(address)); connection_status == -1) {
-        std::cout << WSAGetLastError() << std::endl;
-        error("error connecting to the server socekt");
-    }
-    else {
-        recv(sock, message, sizeof(message), NULL);
-        converter = message;
-        std::cout << converter << std::endl;
-        std::cin.get();
-    }
-
-    
-
-
-
-
-
     //// The program should accept at least 2 inputs (i.e Name of the program & directory for input files)
     //// If their are more than 2 arguments, the user may have provided an intermediate and output directory
     //if (argc < 2) {
