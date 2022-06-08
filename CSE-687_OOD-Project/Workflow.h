@@ -29,12 +29,11 @@ private:
 	const unsigned short int BASEPORT = 20000;
 public:
 	Workflow(const std::filesystem::path& inputDir, const std::filesystem::path& tempDir, const std::filesystem::path& outputDir, const wchar_t* dllPath);
-	bool Init() const;
-	int MapperPartition(const std::vector<std::filesystem::path>& inputFiles, FuncMap map, int numMapperThreads = 5) const;
-	void ReducerPartition(const std::vector<std::filesystem::path>& tempFiles, FuncReduce reduce, int numOfReducerThreads) const;
-	void StartTasks(const std::vector<std::filesystem::path>& files, int numThreads, FuncMap map = nullptr, FuncReduce reduce = nullptr) const;
+	void Init() const;
 	std::vector<PROCESS_INFORMATION> CreateServerProcesses() const;
-	void ProcessCleanup(const std::vector<PROCESS_INFORMATION>& proc_informations)const;
+	void SocketCleanup(const std::vector<SOCKET>& server_sockets) const;
+	void ProcessCleanup(const std::vector<PROCESS_INFORMATION>& proc_informations) const;
 	void Error(const std::string& message) const;
+	std::vector<SOCKET> ConnectClients() const;
 };
 

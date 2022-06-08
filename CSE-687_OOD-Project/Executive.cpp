@@ -21,54 +21,54 @@
 /// <returns></returns>
 int main(int argc, char* argv[])
 {
-    //// The program should accept at least 2 inputs (i.e Name of the program & directory for input files)
-    //// If their are more than 2 arguments, the user may have provided an intermediate and output directory
-    //if (argc < 2) {
-    //    std::cout << "Missing input files directory, try again!" << std::endl;
-    //    exit(0);
-    //}
+    // The program should accept at least 2 inputs (i.e Name of the program & directory for input files)
+    // If their are more than 2 arguments, the user may have provided an intermediate and output directory
+    if (argc < 2) {
+        std::cout << "Missing input files directory, try again!" << std::endl;
+        exit(0);
+    }
 
-    //// save the input directory as a path (this is done to follow our "path" standard)
-    //std::filesystem::path inputDir = argv[1];
+    // save the input directory as a path (this is done to follow our "path" standard)
+    std::filesystem::path inputDir = argv[1];
 
-    //// If the user doesn't supply a temp and output directory, we will create it for them
-    //std::filesystem::path tempDir =  argc > 2  ? argv[2] : std::filesystem::current_path().string() + "\\tempfiles";
-    //std::filesystem::path outputDir = argc > 3 ? argv[3] : std::filesystem::current_path().string() + "\\outputfiles";
-    //auto mapReduceDllName = argc > 4 ? std::filesystem::path(argv[4]) : L""; // convert the char* to a path so that we can successfully convert to a wchar_t*
-    //const wchar_t* mapReduceLibraryName = !(mapReduceDllName.empty()) ? mapReduceDllName.c_str() : L"MapReduceLibrary.dll";
+    // If the user doesn't supply a temp and output directory, we will create it for them
+    std::filesystem::path tempDir =  argc > 2  ? argv[2] : std::filesystem::current_path().string() + "\\tempfiles";
+    std::filesystem::path outputDir = argc > 3 ? argv[3] : std::filesystem::current_path().string() + "\\outputfiles";
+    auto mapReduceDllName = argc > 4 ? std::filesystem::path(argv[4]) : L""; // convert the char* to a path so that we can successfully convert to a wchar_t*
+    const wchar_t* mapReduceLibraryName = !(mapReduceDllName.empty()) ? mapReduceDllName.c_str() : L"MapReduceLibrary.dll";
 
-    //// create the directories for the temp/intermidate and final output files
-    //std::filesystem::create_directory(tempDir);
-    //std::filesystem::create_directory(outputDir);
+    // create the directories for the temp/intermidate and final output files
+    std::filesystem::create_directory(tempDir);
+    std::filesystem::create_directory(outputDir);
 
-    //if (std::filesystem::is_directory(inputDir) && std::filesystem::is_directory(tempDir) && std::filesystem::is_directory(outputDir)) {
-    //    // Give the input, output, and temp directories to the workflow component.
-    //    Workflow workflow(inputDir, tempDir, outputDir, mapReduceLibraryName);
+    if (std::filesystem::is_directory(inputDir) && std::filesystem::is_directory(tempDir) && std::filesystem::is_directory(outputDir)) {
+        // Give the input, output, and temp directories to the workflow component.
+        Workflow workflow(inputDir, tempDir, outputDir, mapReduceLibraryName);
 
-    //    // Update the user that the process is starting 
-    //    std::cout << "Beginning Processing..." << std::endl;
-    //    if (workflow.Init()) {
-    //        // temp file cleanup
-    //        auto files = Utilities::GetFilesInDirectory(tempDir);
-    //        for (const auto& file : files) {
-    //            if (file.filename().string() != "readme.txt") {
-    //                remove(file);
-    //            }
-    //        }
-    //    
-    //        // remove the temp directory
-    //        std::filesystem::remove(tempDir);
+        // Update the user that the process is starting 
+        std::cout << "Beginning Processing..." << std::endl;
+        
+        // begin the work for creating the server processes and connecting client sockets
+        workflow.Init();
 
-    //        std::cout << "All temp files cleaned up in " << tempDir << std::endl;
+        // temp file cleanup
+        auto files = Utilities::GetFilesInDirectory(tempDir);
 
-    //        std::cout << "Final Output File at: " << outputDir << std::endl;
-    //    }
-    //    else {
-    //        exit(0);
-    //    }
-    //}
-    //else {
-    //    std::cout << "One or more of the provided file directories don't exist. Retry!";
-    //    exit(0);
-    //}
+        if (files.size() > 0) {
+            for (const auto& file : files) {
+                if (file.filename().string() != "readme.txt") {
+                    remove(file);
+                }
+            }
+            // remove the temp directory
+            std::filesystem::remove(tempDir);
+        }
+        
+        std::cout << "All temp files cleaned up in " << tempDir << std::endl;
+        std::cout << "Final Output File at: " << outputDir << std::endl;
+    }
+    else {
+        std::cout << "One or more of the provided file directories don't exist. Retry!";
+        exit(0);
+    }
 }
