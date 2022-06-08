@@ -13,6 +13,7 @@ The project can be executed in one of two ways, by running via visual studio, or
      - `Platform Toolset`      - `Visual Studio 2019 (v142)`
      - `C++ Language Standard` - `ISO C++17 Standard (/std:c++17)`
    - Next, select the `“Debugging”` menu option under the `“Configuration Properties”` dropdown label. 
+   - In the `"Command"` textbox, enter `$(SolutionDir)\buildscript.bat`. This will auto run each server process for the `MapReduce-SocketServer` so you don't have to run them manually. 
    - In the `“Command Arguments”` textbox, enter in the following paths to reference the input, intermediate, and output file directories for running the program. Be sure to separate the paths by a `“space”`. These directories are included as part of the project for running locally and for the unit test project as well. The `“input”` directory will include all the **“Shakespear”** test files for running MapReduce. The `“temp”` directory will be where intermediate files are stored during the process, and the `“output”` directory will be where the final output file is stored.
      - .\inputfiles
      - .\tempfiles
