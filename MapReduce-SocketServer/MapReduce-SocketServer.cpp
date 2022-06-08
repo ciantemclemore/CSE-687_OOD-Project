@@ -10,8 +10,12 @@
 
 void error(const std::string& message);
 
-int main()
+int main(int argc, char* argv[])
 {
+    int portNumber = std::stoi(argv[1]);
+
+    std::cout << portNumber << std::endl;
+
     // WSA Startup init
     WSAData wsa_data = {};
     if (long wsa_status = WSAStartup(MAKEWORD(2, 2), &wsa_data); wsa_status != 0) {
@@ -34,7 +38,7 @@ int main()
     // socket formatting
     inet_pton(AF_INET, "127.0.0.1", &address.sin_addr.s_addr);
     address.sin_family = AF_INET;
-    address.sin_port = htons(8080);
+    address.sin_port = htons(portNumber);
 
     // listen socket
     socket_listen = socket(AF_INET, SOCK_STREAM, NULL);
@@ -44,6 +48,7 @@ int main()
 
     // bind the listen socket
     if (int bind_status = bind(socket_listen, (sockaddr*)&address, sizeof(address)); bind_status == -1) {
+        std::cout << WSAGetLastError() << std::endl;
         error("binding failed");
     }
 
@@ -51,7 +56,7 @@ int main()
     listen(socket_listen, 10);
 
     for (;;) {
-        std::cout << "Waiting for incoming connection..." << std::endl;
+        std::cout << "Waiting for incoming connections on socket " << socket_listen << "..." << std::endl;
         if ((socket_connection = accept(socket_listen, (sockaddr*)&address, &address_size)) != -1) {
             std::cout << "successful connection to " << socket_connection << std::endl;
             std::string welcome_message = "You are now connected";

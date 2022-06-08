@@ -25,6 +25,36 @@ void error(const std::string& message) {
 /// <returns></returns>
 int main(int argc, char* argv[])
 {
+    int basePort = 20000;
+
+    for (int i = 0; i < 3; i++) {
+        STARTUPINFO si = {};
+        PROCESS_INFORMATION pi = {};
+
+        ZeroMemory(&si, sizeof(si));
+        si.cb = sizeof(si);
+        ZeroMemory(&pi, sizeof(pi));
+
+        int portNumber = basePort + i;
+        std::string applicationName = "..\\x64\\Debug\\MapReduce-SocketServer.exe ";
+        std::string cmdArg = applicationName.append(std::to_string(portNumber));
+        wchar_t x[60];
+
+        // copy the command line argument string to the LPWSTR
+        for (int i = 0; i < cmdArg.size(); i++) 
+        {
+            x[i] = cmdArg[i];
+        }
+
+        if (!CreateProcess(L"..\\x64\\Debug\\MapReduce-SocketServer.exe", x , NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi)) {
+            std::cout << "Create Process failed " << GetLastError() << std::endl;
+            return 0;
+        }
+        else {
+            std::cout << "Server process successfully created" << std::endl;
+        }
+    }
+
     // WSA Startup init
     WSAData wsa_data = {};
     if (long wsa_status = WSAStartup(MAKEWORD(2, 2), &wsa_data); wsa_status != 0) {
