@@ -4,12 +4,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.32407.337
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CSE-687_OOD-Project", "CSE-687_OOD-Project\CSE-687_OOD-Project.vcxproj", "{70B5A473-D05B-4E10-998F-BA89A50EB035}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6E9681A1-37E4-4EF1-9CB3-ABFFE231C391} = {6E9681A1-37E4-4EF1-9CB3-ABFFE231C391}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CSE-687_OOD-Project-Unit-Tests", "CSE-687_OOD-Project-Unit-Tests\CSE-687_OOD-Project-Unit-Tests.vcxproj", "{8E26102F-5392-4EF4-8C15-A2C733E5BE56}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UtilityLibrary", "UtilityLibrary\UtilityLibrary.vcxproj", "{0A338E13-83FE-4860-94E7-406AD5E51C82}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MapReduceLibrary", "MapReduceLibrary\MapperLibrary.vcxproj", "{89B9BF83-E6B9-477D-BF0C-642D2B5BE603}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MapReduce-SocketServer", "MapReduce-SocketServer\MapReduce-SocketServer.vcxproj", "{6E9681A1-37E4-4EF1-9CB3-ABFFE231C391}"
+	ProjectSection(ProjectDependencies) = postProject
+		{89B9BF83-E6B9-477D-BF0C-642D2B5BE603} = {89B9BF83-E6B9-477D-BF0C-642D2B5BE603}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B99B9009-E160-4171-BB75-2722B548A707}"
+	ProjectSection(SolutionItems) = preProject
+		buildscript.bat = buildscript.bat
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +64,14 @@ Global
 		{89B9BF83-E6B9-477D-BF0C-642D2B5BE603}.Release|x64.Build.0 = Release|x64
 		{89B9BF83-E6B9-477D-BF0C-642D2B5BE603}.Release|x86.ActiveCfg = Release|Win32
 		{89B9BF83-E6B9-477D-BF0C-642D2B5BE603}.Release|x86.Build.0 = Release|Win32
+		{6E9681A1-37E4-4EF1-9CB3-ABFFE231C391}.Debug|x64.ActiveCfg = Debug|x64
+		{6E9681A1-37E4-4EF1-9CB3-ABFFE231C391}.Debug|x64.Build.0 = Debug|x64
+		{6E9681A1-37E4-4EF1-9CB3-ABFFE231C391}.Debug|x86.ActiveCfg = Debug|Win32
+		{6E9681A1-37E4-4EF1-9CB3-ABFFE231C391}.Debug|x86.Build.0 = Debug|Win32
+		{6E9681A1-37E4-4EF1-9CB3-ABFFE231C391}.Release|x64.ActiveCfg = Release|x64
+		{6E9681A1-37E4-4EF1-9CB3-ABFFE231C391}.Release|x64.Build.0 = Release|x64
+		{6E9681A1-37E4-4EF1-9CB3-ABFFE231C391}.Release|x86.ActiveCfg = Release|Win32
+		{6E9681A1-37E4-4EF1-9CB3-ABFFE231C391}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

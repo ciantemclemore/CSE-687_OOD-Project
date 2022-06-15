@@ -1,11 +1,14 @@
 // Executive.cpp : This file contains the 'main' function. Program execution begins and ends there.
-
+#pragma once 
+#include <WinSock2.h>
+#include <WS2tcpip.h>
 #include <iostream>
 #include "Workflow.h"
 #include "filesystem"
 #include "fstream"
 #include "string"
 #include "Utilities.h"
+
 /// <summary>
 /// The main function will accept  command line arguments.
 /// 1. Directory that holds the input files to MapReduce
@@ -44,25 +47,25 @@ int main(int argc, char* argv[])
 
         // Update the user that the process is starting 
         std::cout << "Beginning Processing..." << std::endl;
-        if (workflow.Init()) {
-            // temp file cleanup
-            auto files = Utilities::GetFilesInDirectory(tempDir);
+        
+        // begin the work for creating the server processes and connecting client sockets
+        workflow.Init();
+
+        // temp file cleanup
+        auto files = Utilities::GetFilesInDirectory(tempDir);
+
+        if (files.size() > 0) {
             for (const auto& file : files) {
                 if (file.filename().string() != "readme.txt") {
                     remove(file);
                 }
             }
-        
             // remove the temp directory
             std::filesystem::remove(tempDir);
-
-            std::cout << "All temp files cleaned up in " << tempDir << std::endl;
-
-            std::cout << "Final Output File at: " << outputDir << std::endl;
         }
-        else {
-            exit(0);
-        }
+        
+        std::cout << "All temp files cleaned up in " << tempDir << std::endl;
+        std::cout << "Final Output File at: " << outputDir << std::endl;
     }
     else {
         std::cout << "One or more of the provided file directories don't exist. Retry!";
